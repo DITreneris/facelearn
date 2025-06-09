@@ -13,7 +13,7 @@
     <p class="points-info">
         Congratulations! You already collected:
         <span class="points-icon">⭐</span>
-        <span class="points-value" id="user-points">237 points</span>
+        <span class="points-value" id="user-points">0 points</span>
     </p>
 
     <div class="achievements-section">
@@ -58,9 +58,15 @@
 
 {% block dom_ready %}
 loadAchievements();
+const userToken = localStorage.getItem('access_token');
+if (userToken) {
+    loadUserPoints(userToken);
+}
 {% endblock %}
 
 {% block scripts %}
+const userToken = localStorage.getItem('access_token');
+
 async function loadAchievements() {
     try {
         const response = await fetch('/api/v1/achievements/', {
@@ -133,6 +139,19 @@ async function completeAchievement(achievementId) {
         }
     } catch (error) {
         console.error('Error completing achievement:', error);
+    }
+}
+
+async function loadUserPoints(token) {
+    try {
+        const response = await fetch('/api/v1/users/stats', {
+            headers: { 'Authorization': `Bearer ${token}` }
+        });
+        if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+        const stats = await response.json();
+        document.getElementById('user-points').textContent = `${stats.total_points} points`;
+    } catch (error) {
+        console.error('Error loading user points:', error);
     }
 }
 {% endblock %}
