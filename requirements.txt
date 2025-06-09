@@ -44,5 +44,6 @@ jinja2==3.1.2
 
 # Excel file processing
 openpyxl==3.1.2
+psycopg2-binary
 apscheduler==3.10.4
 gunicorn==21.2.0
