@@ -47,3 +47,5 @@ wheels/
 .Trashes
 ehthumbs.db
 Thumbs.db
+
+admin.json
